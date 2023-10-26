@@ -1,0 +1,110 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+nav {
+    height: 10vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+#gallery {
+    display: inline-block;
+    border: solid 1px black;
+    width: 100%;
+    height: 90vh;
+    background-color: cadetblue;
+}
+
+.card {
+    border: solid 2px black;
+    height: 50%;
+    width: 20%;
+    display: inline-block;
+}
+
+.card div{
+    border: solid 1px blue;
+    height: 25%;
+}
+.card div p{
+    font-size: 0.8rem;
+}
+
+.shop {
+    
+    display: grid;
+    grid-template-columns: repeat(4, 21.25%);
+    gap: 3%;
+    justify-content:  center;
+    
+}
+.item{
+    border: solid 3px black;
+    border-radius: 5%;
+    padding: 5%;
+    
+
+}
+
+.details{
+    display: flex;
+    flex-direction: column;
+    padding: 5%;
+    gap: 10px;
+}
+
+.price-quantity {
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 25%;
+    font-size: 1.5rem;
+}
+/* CARRITO */
+
+.total-container{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 35%;
+    z-index: 1;
+
+}
+
+.kart-container {
+    display: grid;
+    grid-template-columns: 2fr 6fr 2fr;
+}
+
+.kart-background {
+    background-color: rgb(175, 123, 123);
+}
+
+.quantity-in-kart{
+    border: solid 1px black;
+}
+
+.kart-list {
+    list-style: none;
+    border: solid 1px black;
+}
+.price-in-kart{
+    border: solid 1px black;
+}
+
+.price-container {
+    border: solid 3px black;
+    width: 100%;
+    text-align: center;
+}
+
+.hidden{
+    display: none;
+}
