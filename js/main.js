@@ -32,10 +32,25 @@ let products = [
         img:"img/tablas/toy-machine-sketchy-monster-8skateboard-deck-172_2048x.jpg"   
     },
 ];
+let kart = [];
+//Función que me da un array con un producto cuya id sea igual a la que le paso por argumento, es uno solo
+//Porque aunque sea un filter, las Id son únicas
+function checkKart(idProd) {  
+    let quantidad = 0;
+    let checkedProduct = kart.filter(i => i.id == idProd)
+    //Si existe el producto en el carrito, me devuelve  su propiedad .quantity, y lo guarda en la variable que
+    //por defecto es 0 ("quantidad");
+    if (checkedProduct != null && checkedProduct.length > 0) {
+        quantidad = checkedProduct[0].quantity;
+    };
+    return quantidad;
+};
+
 // Función para crear los productos como objetos en el HTML
 let shopEl = document.getElementById("shop");
 function startShop(productsArray) {
     for (item of productsArray) {
+        let cantidad = checkKart(item.id);
         shopEl.innerHTML+=`
         <div id="item-id-${item.id}"class="item">
         <img
@@ -52,7 +67,7 @@ function startShop(productsArray) {
               <h2>$${item.price}</h2>
               <div class="buttons">
                   <button onclick="decrement(${item.id}, ${item.price})" id="minus-btn">-</button>
-                  <div id="${item.id}" class="quantity">0</div>
+                  <div id="${item.id}" class="quantity">${cantidad}</div>
                   <button onclick="increment(${item.id}, ${item.price}, '${item.name}')" id="add-btn">+</button>
               </div>
           </div>
@@ -102,7 +117,7 @@ function decrement(productID, productPrice) {
 };
 
 //Kart functions
-let kart = [];
+
 
 let kartBtn = document.getElementById("kart-btn");
 
@@ -160,10 +175,21 @@ let minimum = document.getElementById("minimum-input")
 let maximum = document.getElementById("maximum-input")
 let filterBtn = document.getElementById("filter-btn");
 
-filterBtn.addEventListener("click", function() {
-    const minPrice = parseFloat(minimum.value);
-    const maxPrice = parseFloat(maximum.value);
+filterBtn.addEventListener("click", function() { // función para filtrar que crea 2 variables, min y max
+    let minPrice;   // Luego chequeo si el usuario no puso nada en el input (NaN= not a number)
+    let maxPrice;   // con la función isNaN() **IMPORTANTE** parsear el NaN (?) no sé por qué 
+    if (isNaN(parseFloat(minimum.value))) { //Si es NaN entonces en el min vale 0 la variable
+        minPrice = 0;
+    } else {
+        minPrice = parseFloat(minimum.value); // Si le puso algo entonces, la variable vale el value del input
+    };                                       
+    if (isNaN(parseFloat(maximum.value))) {
+        maxPrice = 9999999;
+    } else {
+        maxPrice = parseFloat(maximum.value);
+    };
     console.log(minPrice, maxPrice);
+
     let priceFiltered = products.filter(p => 
         (p.price>=minPrice && p.price<= maxPrice)
     );
