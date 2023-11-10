@@ -32,7 +32,15 @@ let products = [
         img:"img/tablas/toy-machine-sketchy-monster-8skateboard-deck-172_2048x.jpg"   
     },
 ];
-let kart = [];
+let kart;
+let storedKart = localStorage.getItem("kart"); //Me traigo el carrito del storage, pero todavía está en formato JSON
+
+if (storedKart) { //Si existe el carrito en el storage que quise traer arriba
+    kart = JSON.parse(storedKart); //Entonces lo vuelvo a formato array y lo guardo en el carrito.
+} else { //Si no existe, inicio un carrito vacío.
+    kart = [];
+};
+
 //Función que me da un array con un producto cuya id sea igual a la que le paso por argumento, es uno solo
 //Porque aunque sea un filter, las Id son únicas
 function checkKart(idProd) {  
@@ -43,14 +51,15 @@ function checkKart(idProd) {
     if (checkedProduct != null && checkedProduct.length > 0) {
         quantidad = checkedProduct[0].quantity;
     };
-    return quantidad;
+    return quantidad; //En pocas palabras, función que me devuelve la cantidad de un producto en el carrito.
 };
 
 // Función para crear los productos como objetos en el HTML
 let shopEl = document.getElementById("shop");
 function startShop(productsArray) {
     for (item of productsArray) {
-        let cantidad = checkKart(item.id);
+        let cantidad = checkKart(item.id); //Va a fijarse si en el carrito existe el producto, 
+        // y me va a traer su cantidad en una variable llamada cantidad xd
         shopEl.innerHTML+=`
         <div id="item-id-${item.id}"class="item">
         <img
@@ -101,7 +110,8 @@ function increment(productID, productPrice, productName) {
         });
         quantityInCard.innerText++;
     };
-    console.log(kart);
+    localStorage.setItem("kart", JSON.stringify(kart))
+    console.log(localStorage);
 };
 
 function decrement(productID, productPrice) {
@@ -113,7 +123,8 @@ function decrement(productID, productPrice) {
         findProduct.price = productPrice*findProduct.quantity
         quantityInCard.innerText--;
     };
-    console.log(kart);
+    localStorage.setItem("kart", JSON.stringify(kart))
+    console.log(localStorage);
 };
 
 //Kart functions
@@ -145,7 +156,8 @@ function createKart() {
 
     </div>
     <div class="price-container kart-background" id="price-container">
-    sakjdhasiasuiad
+        <div id="total-price-container"></div>
+        <button id="empty-kart-btn">❌</button>
     </div>
     `;
     let qInKart = document.getElementById("quantity-in-car");
@@ -165,9 +177,19 @@ function createKart() {
         totalPrice += p.price;
     };
     
-    let priceContainer = document.getElementById("price-container");
-    priceContainer.innerText=`PRECIO TOTAL: $${totalPrice}`;
+    let totalPriceContainer = document.getElementById("total-price-container");
+    totalPriceContainer.innerText=`PRECIO TOTAL: $${totalPrice}`;
+    let clearKartBtn = document.getElementById("empty-kart-btn");
+    clearKartBtn.addEventListener("click", clearKart);
 };
+
+
+function clearKart() {
+    localStorage.clear();
+    location.reload();
+};
+
+
 
 //filter Functions
 
@@ -188,15 +210,16 @@ filterBtn.addEventListener("click", function() { // función para filtrar que cr
     } else {
         maxPrice = parseFloat(maximum.value);
     };
-    console.log(minPrice, maxPrice);
 
     let priceFiltered = products.filter(p => 
         (p.price>=minPrice && p.price<= maxPrice)
     );
-    console.log(priceFiltered);
     shopEl.innerHTML=""
     startShop(priceFiltered);
 });
+
+
+
 
 
 

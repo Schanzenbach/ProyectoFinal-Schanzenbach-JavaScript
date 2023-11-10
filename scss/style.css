@@ -100,8 +100,11 @@ nav {
 }
 
 .price-container {
+    display: flex;
+    flex-direction: row;
     border: solid 3px black;
     width: 100%;
+    justify-content: space-around;
     text-align: center;
 }
 
