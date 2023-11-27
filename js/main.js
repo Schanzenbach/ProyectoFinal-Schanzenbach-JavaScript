@@ -1,45 +1,18 @@
-//Array con los productos como objetos
-let products = [
-    {
-        id:1,
-        name: "Yu Gi Oh! Dark Magician Deck",
-        description: "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
-        price: 8000,
-        img:"img/tablas/Madrid-x-Yu-Gi-Oh!-Dark-Magician-8.25_-Skateboard-Deck-_356853-front-US.jpg"
-    },
-
-    {
-        id: 2,
-        name: "DGK-Sunshine",
-        description: "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
-        price: 10000,
-        img: "img/tablas/DGK-Sunshine-8.25_-Skateboard-Deck-_347265.jpg"   
-    },
-
-    {
-        id: 3,
-        name: "DGK-Viper",
-        description: "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
-        price: 15000,
-        img:"img/tablas/DGK-Viper-Logo-8.1_-Skateboard-Deck-_321196.jpg" 
-    },
-
-    {
-        id: 4,
-        name: "Toy-Machine Sketchy Monster",
-        description: "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
-        price: 20000,
-        img:"img/tablas/toy-machine-sketchy-monster-8skateboard-deck-172_2048x.jpg"   
-    },
-];
+//Array con los productos como objetos en archivo .json
 let kart;
 let storedKart = localStorage.getItem("kart"); //Me traigo el carrito del storage, pero todavía está en formato JSON
 
-if (storedKart) { //Si existe el carrito en el storage que quise traer arriba
-    kart = JSON.parse(storedKart); //Entonces lo vuelvo a formato array y lo guardo en el carrito.
-} else { //Si no existe, inicio un carrito vacío.
+/*
+if (storedKart) { 
+    kart = JSON.parse(storedKart); 
+} else { 
     kart = [];
-};
+}; **Código pasado a ternario abajito
+*/
+
+storedKart //Si existe el carrito en el storage que quise traer arriba
+? kart = JSON.parse(storedKart) //Entonces lo vuelvo a formato array y lo guardo en el carrito.
+: kart = []; //Si no existe, inicio un carrito vacío.
 
 //Función que me da un array con un producto cuya id sea igual a la que le paso por argumento, es uno solo
 //Porque aunque sea un filter, las Id son únicas
@@ -56,6 +29,12 @@ function checkKart(idProd) {
 
 // Función para crear los productos como objetos en el HTML
 let shopEl = document.getElementById("shop");
+const getData = async () => {
+    const response = await fetch("./json/data.json");
+    const dataResponse = await response.json();
+    startShop(dataResponse);
+};
+
 function startShop(productsArray) {
     for (item of productsArray) {
         let cantidad = checkKart(item.id); //Va a fijarse si en el carrito existe el producto, 
@@ -86,10 +65,8 @@ function startShop(productsArray) {
     };
     
 };
-startShop(products);
-
-
-
+getData();
+//startShop(products);
 
 // Buttons functions
 function increment(productID, productPrice, productName) {
@@ -157,7 +134,8 @@ function createKart() {
     </div>
     <div class="price-container kart-background" id="price-container">
         <div id="total-price-container"></div>
-        <button id="empty-kart-btn">❌</button>
+        <button id="empty-kart-btn">🗑️</button>
+        <button id="pay-kart-btn">PAGAR</button>
     </div>
     `;
     let qInKart = document.getElementById("quantity-in-car");
@@ -181,12 +159,31 @@ function createKart() {
     totalPriceContainer.innerText=`PRECIO TOTAL: $${totalPrice}`;
     let clearKartBtn = document.getElementById("empty-kart-btn");
     clearKartBtn.addEventListener("click", clearKart);
+    let payKartBtn = document.getElementById("pay-kart-btn");
+    payKartBtn.addEventListener("click", payKart);
 };
 
-
+function payKart() {
+    Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Función todavía no creada :D!",
+        footer: '<a target="_blank" href="https://www.instagram.com/effeminate.fellow_/">Cualquier cosita acá está mi ig</a>'
+      });
+};
 function clearKart() {
-    localStorage.clear();
-    location.reload();
+    Swal.fire({
+        title: "Vaciar el carrito?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Vaciar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire("Carrito eliminado completamente!", "", "success");
+          localStorage.clear();
+          location.reload();
+        } 
+      });
 };
 
 
@@ -210,12 +207,18 @@ filterBtn.addEventListener("click", function() { // función para filtrar que cr
     } else {
         maxPrice = parseFloat(maximum.value);
     };
-
-    let priceFiltered = products.filter(p => 
-        (p.price>=minPrice && p.price<= maxPrice)
-    );
-    shopEl.innerHTML=""
-    startShop(priceFiltered);
+    
+    const getDataFiltered = async () => {
+        const response = await fetch("./json/data.json");
+        const dataResponse = await response.json();
+        let priceFiltered = dataResponse.filter(p => //Voy a copiar del array dataResponse los p cuya p.price coincidan con mi condición
+            (p.price>=minPrice && p.price<= maxPrice) //Y pegarlos en un nuevo array priceFiltered
+        );
+        shopEl.innerHTML=""
+        startShop(priceFiltered); //Inicio el shop con ese arreglo. No supe cómo hacer para no llamar al fetch dos veces. 
+        // Intenté hacer una función fetch que me retorne el array de productos y luego trabajar con ese array. No pude.
+    }
+    getDataFiltered();
 });
 
 

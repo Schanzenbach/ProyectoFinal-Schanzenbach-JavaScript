@@ -1,0 +1,33 @@
+[
+    {
+        "id":1,
+        "name": "Yu Gi Oh! Dark Magician Deck",
+        "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
+        "price": 8000,
+        "img":"img/tablas/Madrid-x-Yu-Gi-Oh!-Dark-Magician-8.25_-Skateboard-Deck-_356853-front-US.jpg"
+    },
+
+    {
+        "id": 2,
+        "name": "DGK-Sunshine",
+        "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
+        "price": 10000,
+        "img": "img/tablas/DGK-Sunshine-8.25_-Skateboard-Deck-_347265.jpg"   
+    },
+
+    {
+        "id": 3,
+        "name": "DGK-Viper",
+        "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
+        "price": 15000,
+        "img":"img/tablas/DGK-Viper-Logo-8.1_-Skateboard-Deck-_321196.jpg" 
+    },
+
+    {
+        "id": 4,
+        "name": "Toy-Machine Sketchy Monster",
+        "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
+        "price": 20000,
+        "img":"img/tablas/toy-machine-sketchy-monster-8skateboard-deck-172_2048x.jpg"   
+    }
+]
